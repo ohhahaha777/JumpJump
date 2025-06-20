@@ -34,6 +34,7 @@
       .qq { background: #4CAF50; }
       .weibo { background: #e6162d; }
       .wechat { background: #09bb07; }
+      .native-share { background: #007bff; }/* 蓝色背景 */
       .copy { background: #555; }
       #share-buttons a:hover { opacity: 0.85; }
     </style>
@@ -63,6 +64,8 @@
 
         <a class="wechat" href="javascript:void(0)" onclick="alert('请点击浏览器右上角或扫码将链接分享到微信'); hideShareButtons();">微信</a>
 
+         <!-- 新增原生分享按钮 -->
+        <a class="native-share" href="javascript:void(0)" onclick="nativeShare()">原生分享</a>
         <a class="copy" href="javascript:void(0)" onclick="copyShareLink()">复制链接</a>
       </div>
     </div>
@@ -268,6 +271,28 @@
             alert("复制失败：" + err);
           });
         }
+        function nativeShare() {
+        const title = "我在《跳一跳》得了成就！";
+        const text = "快来挑战我吧！";
+        const url = "https://ohhahaha777.github.io/JumpJump/";
+
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: text,
+                url: url
+            }).then(() => {
+                console.log("分享成功！");
+                hideShareButtons();
+            }).catch((err) => {
+                console.error("分享失败:", err);
+                alert("分享失败，请手动复制链接");
+            });
+        } else {
+            alert("您的浏览器不支持原生分享，已自动复制链接");
+            copyShareLink();
+        }
+    }
       </script>
   </body>
 </html>
