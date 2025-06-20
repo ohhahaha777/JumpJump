@@ -6,6 +6,8 @@
     <title>JumpJump</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-xxx123456"></script>
+
   </head>
   <body>
     <div id="tuanjie-container" style="width: 100%; height: 100%;" class="tuanjie-desktop">
@@ -24,6 +26,7 @@
       </div>
     </div>
 	
+
 	
     <script>
 
@@ -59,11 +62,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/test_ver_0_2.loader.js";
+      var loaderUrl = buildUrl + "/test_ver_0_3.loader.js";
       var config = {
-        dataUrl: buildUrl + "/test_ver_0_2.data.unityweb",
-        frameworkUrl: buildUrl + "/test_ver_0_2.framework.js.unityweb",
-        codeUrl: buildUrl + "/test_ver_0_2.wasm.unityweb",
+        dataUrl: buildUrl + "/test_ver_0_3.data.unityweb",
+        frameworkUrl: buildUrl + "/test_ver_0_3.framework.js.unityweb",
+        codeUrl: buildUrl + "/test_ver_0_3.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "HangZhouSuiJiTunTun",
         productName: "JumpJump",
@@ -129,7 +132,7 @@
       document.body.appendChild(script);
 
     </script>
-        <script>
+    <script>
     function resizeGame() {
           var gameContainer = document.getElementById("tuanjie-container");
           var widthToHeight = 9 / 16;
@@ -149,6 +152,65 @@
     
         window.addEventListener('resize', resizeGame, false);
         resizeGame();
+    </script>
+
+    <!-- 分享按钮区域 -->
+    <div id="share-buttons">
+        <button onclick="copyTextToClipboard()">复制战绩</button>
+        <button onclick="shareLink()">分享链接</button>
+        <button onclick="captureAndDownloadScreenshot()">下载截图</button>
+    </div>
+    <!-- AddThis 社交分享按钮 -->
+    <div class="addthis_inline_share_toolbox"></div>
+    <!-- JS 功能 -->
+    <script>
+        // 1️⃣ 复制文字到剪贴板
+        function copyTextToClipboard() {
+            const text = "我在《跳一跳》里打出了 888 分，快来挑战我！\nhttps://ohhahaha777.github.io/JumpJump/";
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("战绩已复制，快去粘贴到微信/QQ 吧！");
+                }).catch(err => {
+                    alert("复制失败：" + err);
+                });
+            } else {
+                alert("您的浏览器不支持自动复制，请手动复制！");
+            }
+        }
+
+        // 2️⃣ 分享链接（Web Share API 支持移动端浏览器）
+        function shareLink() {
+            const title = "我在《像素射手》里打出了高分！";
+            const text = "快来挑战我吧！分数：888";
+            const url = "https://ohhahaha777.github.io/JumpJump/";
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: text,
+                    url: url
+                }).then(() => {
+                    console.log("分享成功！");
+                }).catch(err => {
+                    console.warn("分享失败：", err);
+                });
+            } else {
+                alert("当前浏览器不支持直接分享，请复制链接后手动分享");
+            }
+        }
+
+        // 3️⃣ 截图下载
+        function captureAndDownloadScreenshot() {
+            const dataUrl = "data:image/png;base64,...";  // 这里将由 Unity 传入截图数据
+            downloadImage(dataUrl, 'score.png');
+        }
+
+        // 4️⃣ 下载图片
+        function downloadImage(dataUrl, filename) {
+            const a = document.createElement("a");
+            a.href = dataUrl;
+            a.download = filename;
+            a.click();
+        }
     </script>
   </body>
 </html>
