@@ -41,7 +41,7 @@
   </head>
   <body>
     <div id="tuanjie-container" style="width: 100%; height: 100%;" class="tuanjie-desktop">
-      <canvas id="tuanjie-canvas" width=auto height=auto tabindex="-1"></canvas>
+      <canvas id="tuanjie-canvas"  width=auto height=auto tabindex="-1"></canvas>
       <div id="tuanjie-loading-bar">
         <div id="tuanjie-logo"></div>
         <div id="tuanjie-progress-bar-empty">
@@ -105,11 +105,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebGL_test_ver_0_2.loader.js";
+      var loaderUrl = buildUrl + "/WebGL_test_ver_0_1.loader.js";
       var config = {
-        dataUrl: buildUrl + "/WebGL_test_ver_0_2.data.unityweb",
-        frameworkUrl: buildUrl + "/WebGL_test_ver_0_2.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebGL_test_ver_0_2.wasm.unityweb",
+        dataUrl: buildUrl + "/WebGL_test_ver_0_1.data.unityweb",
+        frameworkUrl: buildUrl + "/WebGL_test_ver_0_1.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL_test_ver_0_1.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "HangZhouSuiJiTunTun",
         productName: "JumpJump",
@@ -175,7 +175,8 @@
       document.body.appendChild(script);
 
     </script>
-        <script>
+
+    <script>
     function resizeGame() {
           var gameContainer = document.getElementById("tuanjie-container");
           var widthToHeight = 9 / 16;
@@ -293,6 +294,6 @@
             copyShareLink();
         }
     }
-      </script>
+    </script>
   </body>
 </html>
