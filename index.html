@@ -41,7 +41,7 @@
   </head>
   <body>
     <div id="tuanjie-container" style="width: 100%; height: 100%;" class="tuanjie-desktop">
-      <canvas id="tuanjie-canvas"  width=auto height=auto tabindex="-1"></canvas>
+      <canvas id="tuanjie-canvas" width=auto height=auto tabindex="-1"></canvas>
       <div id="tuanjie-loading-bar">
         <div id="tuanjie-logo"></div>
         <div id="tuanjie-progress-bar-empty">
@@ -56,16 +56,15 @@
       </div>
       <!-- ✅ 分享按钮区域 -->
       <div id="share-buttons">
-        <a class="qq" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://ohhahaha777.github.io/JumpJump/&title=我在《跳一跳》得了成就，快来挑战我吧！"
+        <a class="qq" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://ohhahaha777.github.io/JumpJump/&title=我在跳一跳得了888分，快来挑战我吧！"
           onclick="hideShareButtons()">QQ空间</a>
 
-        <a class="weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://ohhahaha777.github.io/JumpJump/&title=我在《跳一跳》得了成就，快来挑战我吧！"
+        <a class="weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://ohhahaha777.github.io/JumpJump/&title=我在跳一跳得了888分，快来挑战我吧！"
           onclick="hideShareButtons()">微博</a>
 
         <a class="wechat" href="javascript:void(0)" onclick="alert('请点击浏览器右上角或扫码将链接分享到微信'); hideShareButtons();">微信</a>
-
-         <!-- 新增原生分享按钮 -->
         <a class="native-share" href="javascript:void(0)" onclick="nativeShare()">原生分享</a>
+
         <a class="copy" href="javascript:void(0)" onclick="copyShareLink()">复制链接</a>
       </div>
     </div>
@@ -105,11 +104,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebGL_test_ver_0_1.loader.js";
+      var loaderUrl = buildUrl + "/WebGL_test_ver_0_3.loader.js";
       var config = {
-        dataUrl: buildUrl + "/WebGL_test_ver_0_1.data.unityweb",
-        frameworkUrl: buildUrl + "/WebGL_test_ver_0_1.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebGL_test_ver_0_1.wasm.unityweb",
+        dataUrl: buildUrl + "/WebGL_test_ver_0_3.data.unityweb",
+        frameworkUrl: buildUrl + "/WebGL_test_ver_0_3.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL_test_ver_0_3.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "HangZhouSuiJiTunTun",
         productName: "JumpJump",
@@ -175,8 +174,7 @@
       document.body.appendChild(script);
 
     </script>
-
-    <script>
+        <script>
     function resizeGame() {
           var gameContainer = document.getElementById("tuanjie-container");
           var widthToHeight = 9 / 16;
@@ -200,79 +198,79 @@
 
     <!-- JS 功能 -->
     <script>
-        // 1️⃣ 复制文字到剪贴板
-        function copyTextToClipboard() {
-            const text = "我在《跳一跳》里打出了成就，快来挑战我！\nhttps://ohhahaha777.github.io/JumpJump/";
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert("战绩已复制，快去粘贴到微信/QQ 吧！");
-                    hideShareButtons(); 
-                }).catch(err => {
-                    alert("复制失败：" + err);
-                    hideShareButtons(); 
-                });
-            } else {
-                alert("您的浏览器不支持自动复制，请手动复制！");
-                hideShareButtons(); 
-            }
-        }
+      // 1️⃣ 复制文字到剪贴板
+      function copyTextToClipboard() {
+          const text = "我在《跳一跳》里打出了 888 分，快来挑战我！\nhttps://ohhahaha777.github.io/JumpJump/";
+          if (navigator.clipboard) {
+              navigator.clipboard.writeText(text).then(() => {
+                  alert("战绩已复制，快去粘贴到微信/QQ 吧！");
+                  hideShareButtons(); 
+              }).catch(err => {
+                  alert("复制失败：" + err);
+                  hideShareButtons(); 
+              });
+          } else {
+              alert("您的浏览器不支持自动复制，请手动复制！");
+              hideShareButtons(); 
+          }
+      }
 
-        // 2️⃣ 分享链接（Web Share API 支持移动端浏览器）
-        function shareLink() {
-            const title = "我在《像素射手》里打出了高分！";
-            const text = "快来挑战我吧！分数：888";
-            const url = "https://ohhahaha777.github.io/JumpJump/";
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: text,
-                    url: url
-                }).then(() => {
-                    console.log("分享成功！");
-                    hideShareButtons(); 
-                }).catch(err => {
-                    console.warn("分享失败：", err);
-                    hideShareButtons(); 
-                });
-            } else {
-                alert("当前浏览器不支持直接分享，请复制链接后手动分享");
-                hideShareButtons(); 
-            }
-        }
+      // 2️⃣ 分享链接（Web Share API 支持移动端浏览器）
+      function shareLink() {
+          const title = "我在《像素射手》里打出了高分！";
+          const text = "快来挑战我吧！分数：888";
+          const url = "https://ohhahaha777.github.io/JumpJump/";
+          if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: text,
+                  url: url
+              }).then(() => {
+                  console.log("分享成功！");
+                  hideShareButtons(); 
+              }).catch(err => {
+                  console.warn("分享失败：", err);
+                  hideShareButtons(); 
+              });
+          } else {
+              alert("当前浏览器不支持直接分享，请复制链接后手动分享");
+              hideShareButtons(); 
+          }
+      }
 
-        // 3️⃣ 截图下载
-        function captureAndDownloadScreenshot() {
-            const dataUrl = "data:image/png;base64,...";  // 这里将由 Unity 传入截图数据
-            downloadImage(dataUrl, 'score.png');
-            hideShareButtons(); 
-        }
+      // 3️⃣ 截图下载
+      function captureAndDownloadScreenshot() {
+          const dataUrl = "data:image/png;base64,...";  // 这里将由 Unity 传入截图数据
+          downloadImage(dataUrl, 'score.png');
+          hideShareButtons(); 
+      }
 
-        // 4️⃣ 下载图片
-        function downloadImage(dataUrl, filename) {
-            const a = document.createElement("a");
-            a.href = dataUrl;
-            a.download = filename;
-            a.click();
-        }
+      // 4️⃣ 下载图片
+      function downloadImage(dataUrl, filename) {
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = filename;
+          a.click();
+      }
 
-        function showShareButtons() {
-          document.getElementById("share-buttons").style.display = "block";
-        }
+      function showShareButtons() {
+        document.getElementById("share-buttons").style.display = "block";
+      }
 
-        function hideShareButtons() {
-          document.getElementById("share-buttons").style.display = "none";
-        }
+      function hideShareButtons() {
+        document.getElementById("share-buttons").style.display = "none";
+      }
 
-        function copyShareLink() {
-          const text = "我在《跳一跳》得了成就，快来挑战我吧！ https://ohhahaha777.github.io/JumpJump/";
-          navigator.clipboard.writeText(text).then(() => {
-            alert("已复制分享链接！");
-            hideShareButtons(); // 成功复制后自动关闭
-          }).catch(err => {
-            alert("复制失败：" + err);
-          });
-        }
-        function nativeShare() {
+      function copyShareLink() {
+        const text = "我在《跳一跳》得了成就，快来挑战我吧！ https://ohhahaha777.github.io/JumpJump/";
+        navigator.clipboard.writeText(text).then(() => {
+          alert("已复制分享链接！");
+          hideShareButtons(); // 成功复制后自动关闭
+        }).catch(err => {
+          alert("复制失败：" + err);
+        });
+      }
+      function nativeShare() {
         const title = "我在《跳一跳》得了成就！";
         const text = "快来挑战我吧！";
         const url = "https://ohhahaha777.github.io/JumpJump/";
@@ -293,7 +291,7 @@
             alert("您的浏览器不支持原生分享，已自动复制链接");
             copyShareLink();
         }
-    }
-    </script>
+      }
+      </script>
   </body>
 </html>
