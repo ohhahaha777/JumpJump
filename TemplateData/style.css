@@ -5,7 +5,7 @@ body { padding: 0; margin: 0 }
 #tuanjie-canvas { background: #231F20 }
 .tuanjie-mobile #tuanjie-canvas { width: 100%; height: 100% }
 #tuanjie-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
-#tuanjie-logo { width: 0px; height: 0px; background: url('tuanjie-logo-dark.png') no-repeat center }
+#tuanjie-logo { width: 154px; height: 130px; background: url('tuanjie-logo-dark.png') no-repeat center }
 #tuanjie-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }
 #tuanjie-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
 #tuanjie-footer { position: relative }

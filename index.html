@@ -1,297 +1,371 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>JumpJump</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
 
-    <style>
-      #share-buttons {
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        z-index: 9999;
-        text-align: center;
-        display: none;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 10px 0;
-        border-top: 1px solid #ccc;
-      }
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Tuanjie WebGL Player | JumpJump</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <style>
+    #share-buttons {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      text-align: center;
+      display: none;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 0;
+      border-top: 1px solid #ccc;
+    }
 
-      #share-buttons a {
-        display: inline-block;
-        margin: 6px;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 14px;
-        text-decoration: none;
-        color: white;
-      }
+    #share-buttons a {
+      display: inline-block;
+      margin: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      color: white;
+    }
 
-      .qq { background: #4CAF50; }
-      .weibo { background: #e6162d; }
-      .wechat { background: #09bb07; }
-      .native-share { background: #007bff; }/* 蓝色背景 */
-      .copy { background: #555; }
-      #share-buttons a:hover { opacity: 0.85; }
-    </style>
-  </head>
-  <body>
-    <div id="tuanjie-container" style="width: 100%; height: 100%;" class="tuanjie-desktop">
-      <canvas id="tuanjie-canvas" width=auto height=auto tabindex="-1"></canvas>
-      <div id="tuanjie-loading-bar">
-        <div id="tuanjie-logo"></div>
-        <div id="tuanjie-progress-bar-empty">
-          <div id="tuanjie-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="tuanjie-warning"> </div>
-      <div id="tuanjie-footer">
-        <div id="tuanjie-webgl-logo"></div>
-        <div id="tuanjie-fullscreen-button"></div>
-        <div id="tuanjie-build-title">JumpJump</div>
-      </div>
-      <!-- ✅ 分享按钮区域 -->
-      <div id="share-buttons">
-        <a class="qq" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://ohhahaha777.github.io/JumpJump/&title=我在跳一跳得了888分，快来挑战我吧！"
-          onclick="hideShareButtons()">QQ空间</a>
+    .qq {
+      background: #4CAF50;
+    }
 
-        <a class="weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://ohhahaha777.github.io/JumpJump/&title=我在跳一跳得了888分，快来挑战我吧！"
-          onclick="hideShareButtons()">微博</a>
+    .weibo {
+      background: #e6162d;
+    }
 
-        <a class="wechat" href="javascript:void(0)" onclick="alert('请点击浏览器右上角或扫码将链接分享到微信'); hideShareButtons();">微信</a>
-        <a class="native-share" href="javascript:void(0)" onclick="nativeShare()">原生分享</a>
+    .wechat {
+      background: #09bb07;
+    }
 
-        <a class="copy" href="javascript:void(0)" onclick="copyShareLink()">复制链接</a>
+    .native-share {
+      background: #007bff;
+    }
+
+    /* 蓝色背景 */
+    .copy {
+      background: #555;
+    }
+
+    #share-buttons a:hover {
+      opacity: 0.85;
+    }
+  </style>
+  <style>
+    /* 添加新的分享状态提示 */
+    #share-status {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      z-index: 10000;
+      display: none;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="tuanjie-container" style="width: 100%; height: 100%;" class="tuanjie-desktop">
+    <canvas id="tuanjie-canvas" width=auto height=auto tabindex="-1"></canvas>
+    <div id="tuanjie-loading-bar">
+      <div id="tuanjie-logo"></div>
+      <div id="tuanjie-progress-bar-empty">
+        <div id="tuanjie-progress-bar-full"></div>
       </div>
     </div>
-	
-	
-    <script>
+    <div id="tuanjie-warning"> </div>
+    <div id="tuanjie-footer">
+      <div id="tuanjie-webgl-logo"></div>
+      <div id="tuanjie-fullscreen-button"></div>
+      <div id="tuanjie-build-title">JumpJump</div>
+    </div>
+    <!-- ✅ 分享按钮区域 -->
+    <div id="share-buttons">
+      <a class="qq" target="_blank"
+        href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://ohhahaha777.github.io/JumpJump/&title=我在《跳一跳》得了成就，快来挑战我吧！"
+        onclick="hideShareButtons()">QQ空间</a>
 
-      var container = document.querySelector("#tuanjie-container");
-      var canvas = document.querySelector("#tuanjie-canvas");
-      var loadingBar = document.querySelector("#tuanjie-loading-bar");
-      var progressBarFull = document.querySelector("#tuanjie-progress-bar-full");
-      var fullscreenButton = document.querySelector("#tuanjie-fullscreen-button");
-      var warningBanner = document.querySelector("#tuanjie-warning");
+      <a class="weibo" target="_blank"
+        href="https://service.weibo.com/share/share.php?url=https://ohhahaha777.github.io/JumpJump/&title=我在《跳一跳》得了成就，快来挑战我吧！"
+        onclick="hideShareButtons()">微博</a>
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
+      <a class="wechat" href="javascript:void(0)" onclick="alert('请点击浏览器右上角或扫码将链接分享到微信'); hideShareButtons();">微信</a>
+
+      <!-- 新增原生分享按钮 -->
+      <a class="native-share" href="javascript:void(0)" onclick="nativeShare()">原生分享</a>
+      <a class="copy" href="javascript:void(0)" onclick="copyShareLink()">复制链接</a>
+    </div>
+    <div id="share-status">正在准备分享...</div>
+  </div>
+
+
+  <script>
+
+    var container = document.querySelector("#tuanjie-container");
+    var canvas = document.querySelector("#tuanjie-canvas");
+    var loadingBar = document.querySelector("#tuanjie-loading-bar");
+    var progressBarFull = document.querySelector("#tuanjie-progress-bar-full");
+    var fullscreenButton = document.querySelector("#tuanjie-fullscreen-button");
+    var warningBanner = document.querySelector("#tuanjie-warning");
+
+    // Shows a temporary message banner/ribbon for a few seconds, or
+    // a permanent error message on top of the canvas if type=='error'.
+    // If type=='warning', a yellow highlight color is used.
+    // Modify or remove this function to customize the visually presented
+    // way that non-critical warnings and error messages are presented to the
+    // user.
+    function unityShowBanner(msg, type) {
+      function updateBannerVisibility() {
+        warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
       }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebGL_test_ver_0_3.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/WebGL_test_ver_0_3.data.unityweb",
-        frameworkUrl: buildUrl + "/WebGL_test_ver_0_3.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebGL_test_ver_0_3.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "HangZhouSuiJiTunTun",
-        productName: "JumpJump",
-        productVersion: "0.1",
-        showBanner: unityShowBanner,
-      };
-
-      // By default Tuanjie keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      // If you would like all file writes inside Unity Application.persistentDataPath
-      // directory to automatically persist so that the contents are remembered when
-      // the user revisits the site the next time, uncomment the following line:
-      // config.autoSyncPersistentDataPath = true;
-      // This autosyncing is currently not the default behavior to avoid regressing
-      // existing user projects that might rely on the earlier manual
-      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-      // expected to change.
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "tuanjie-mobile";
-        canvas.className = "tuanjie-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
+      var div = document.createElement('div');
+      div.innerHTML = msg;
+      warningBanner.appendChild(div);
+      if (type == 'error') div.style = 'background: red; padding: 10px;';
+      else {
+        if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+        setTimeout(function () {
+          warningBanner.removeChild(div);
+          updateBannerVisibility();
+        }, 5000);
       }
+      updateBannerVisibility();
+    }
 
-      loadingBar.style.display = "block";
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/WebGL_test_ver_0_2.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/WebGL_test_ver_0_2.data.unityweb",
+      frameworkUrl: buildUrl + "/WebGL_test_ver_0_2.framework.js.unityweb",
+      codeUrl: buildUrl + "/WebGL_test_ver_0_2.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "HangZhouSuiJiTunTun",
+      productName: "JumpJump",
+      productVersion: "0.1",
+      showBanner: unityShowBanner,
+    };
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createTuanjieInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((tuanjieInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  tuanjieInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
+    // By default Tuanjie keeps WebGL canvas render target size matched with
+    // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+    // Set this to false if you want to decouple this synchronization from
+    // happening inside the engine, and you would instead like to size up
+    // the canvas DOM size and WebGL render target sizes yourself.
+    // config.matchWebGLToCanvasSize = false;
 
-      document.body.appendChild(script);
+    // If you would like all file writes inside Unity Application.persistentDataPath
+    // directory to automatically persist so that the contents are remembered when
+    // the user revisits the site the next time, uncomment the following line:
+    // config.autoSyncPersistentDataPath = true;
+    // This autosyncing is currently not the default behavior to avoid regressing
+    // existing user projects that might rely on the earlier manual
+    // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+    // expected to change.
 
-    </script>
-        <script>
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      // Mobile device style: fill the whole browser client area with the game canvas:
+
+      var meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+      document.getElementsByTagName('head')[0].appendChild(meta);
+      container.className = "tuanjie-mobile";
+      canvas.className = "tuanjie-mobile";
+
+      // To lower canvas resolution on mobile devices to gain some
+      // performance, uncomment the following line:
+      // config.devicePixelRatio = 1;
+
+
+    } else {
+      // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+
+
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+    }
+
+    loadingBar.style.display = "block";
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      createTuanjieInstance(canvas, config, (progress) => {
+        progressBarFull.style.width = 100 * progress + "%";
+      }).then((tuanjieInstance) => {
+        loadingBar.style.display = "none";
+        fullscreenButton.onclick = () => {
+          tuanjieInstance.SetFullscreen(1);
+        };
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+
+    document.body.appendChild(script);
+
+  </script>
+
+  <script>
     function resizeGame() {
-          var gameContainer = document.getElementById("tuanjie-container");
-          var widthToHeight = 9 / 16;
-          var newWidth = window.innerWidth;
-          var newHeight = window.innerHeight;
-          var newWidthToHeight = newWidth / newHeight;
-    
-          if (newWidthToHeight > widthToHeight) {
-              newWidth = newHeight * widthToHeight;
-            } else {
-              newHeight = newWidth / widthToHeight;
-          }
-    
-          gameContainer.style.width = newWidth + 'px';
-          gameContainer.style.height = newHeight + 'px';
-        }
-    
-        window.addEventListener('resize', resizeGame, false);
-        resizeGame();
-    </script>
+      var gameContainer = document.getElementById("tuanjie-container");
+      var widthToHeight = 9 / 16;
+      var newWidth = window.innerWidth;
+      var newHeight = window.innerHeight;
+      var newWidthToHeight = newWidth / newHeight;
 
-    <!-- JS 功能 -->
-    <script>
-      // 1️⃣ 复制文字到剪贴板
-      function copyTextToClipboard() {
-          const text = "我在《跳一跳》里打出了 888 分，快来挑战我！\nhttps://ohhahaha777.github.io/JumpJump/";
-          if (navigator.clipboard) {
-              navigator.clipboard.writeText(text).then(() => {
-                  alert("战绩已复制，快去粘贴到微信/QQ 吧！");
-                  hideShareButtons(); 
-              }).catch(err => {
-                  alert("复制失败：" + err);
-                  hideShareButtons(); 
-              });
-          } else {
-              alert("您的浏览器不支持自动复制，请手动复制！");
-              hideShareButtons(); 
-          }
+      if (newWidthToHeight > widthToHeight) {
+        newWidth = newHeight * widthToHeight;
+      } else {
+        newHeight = newWidth / widthToHeight;
       }
 
-      // 2️⃣ 分享链接（Web Share API 支持移动端浏览器）
-      function shareLink() {
-          const title = "我在《像素射手》里打出了高分！";
-          const text = "快来挑战我吧！分数：888";
-          const url = "https://ohhahaha777.github.io/JumpJump/";
-          if (navigator.share) {
-              navigator.share({
-                  title: title,
-                  text: text,
-                  url: url
-              }).then(() => {
-                  console.log("分享成功！");
-                  hideShareButtons(); 
-              }).catch(err => {
-                  console.warn("分享失败：", err);
-                  hideShareButtons(); 
-              });
-          } else {
-              alert("当前浏览器不支持直接分享，请复制链接后手动分享");
-              hideShareButtons(); 
-          }
-      }
+      gameContainer.style.width = newWidth + 'px';
+      gameContainer.style.height = newHeight + 'px';
+    }
 
-      // 3️⃣ 截图下载
-      function captureAndDownloadScreenshot() {
-          const dataUrl = "data:image/png;base64,...";  // 这里将由 Unity 传入截图数据
-          downloadImage(dataUrl, 'score.png');
-          hideShareButtons(); 
-      }
+    window.addEventListener('resize', resizeGame, false);
+    resizeGame();
+  </script>
 
-      // 4️⃣ 下载图片
-      function downloadImage(dataUrl, filename) {
-          const a = document.createElement("a");
-          a.href = dataUrl;
-          a.download = filename;
-          a.click();
-      }
+  <script>
+    function showShareButtons() {
+      document.getElementById("share-buttons").style.display = "block";
+    }
 
-      function showShareButtons() {
-        document.getElementById("share-buttons").style.display = "block";
-      }
+    function hideShareButtons() {
+      document.getElementById("share-buttons").style.display = "none";
+    }
 
-      function hideShareButtons() {
-        document.getElementById("share-buttons").style.display = "none";
-      }
+    function copyShareLink() {
+      const text = "我在《跳一跳》得了成就，快来挑战我吧！ https://ohhahaha777.github.io/JumpJump/";
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制分享链接！");
+        hideShareButtons(); // 成功复制后自动关闭
+      }).catch(err => {
+        alert("复制失败：" + err);
+      });
+    }
 
-      function copyShareLink() {
-        const text = "我在《跳一跳》得了成就，快来挑战我吧！ https://ohhahaha777.github.io/JumpJump/";
-        navigator.clipboard.writeText(text).then(() => {
-          alert("已复制分享链接！");
-          hideShareButtons(); // 成功复制后自动关闭
-        }).catch(err => {
-          alert("复制失败：" + err);
-        });
-      }
+    // 全局变量存储截图数据
+    var currentScreenshotData = null;
+    // 原生分享函数
       function nativeShare() {
-        const title = "我在《跳一跳》得了成就！";
-        const text = "快来挑战我吧！";
-        const url = "https://ohhahaha777.github.io/JumpJump/";
+        if (!currentScreenshotData) {
+          showShareStatus("请先截图", true);
+          return;
+        }
 
-        if (navigator.share) {
+        showShareStatus("正在准备分享...");
+        
+        try {
+          // 转换为Blob对象
+          const byteString = atob(currentScreenshotData.split(',')[1]);
+          const mimeType = currentScreenshotData.split(',')[0].match(/:(.*?);/)[1];
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          
+          for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+          }
+          
+          const blob = new Blob([ab], { type: mimeType });
+          const file = new File([blob], "jumpjump.png", { type: mimeType });
+          
+          // 调用原生分享
+          if (navigator.share) {
             navigator.share({
-                title: title,
-                text: text,
-                url: url
+              title: '我的跳一跳游戏成就',
+              text: '看看我的游戏成就！',
+              files: [file]
             }).then(() => {
-                console.log("分享成功！");
-                hideShareButtons();
-            }).catch((err) => {
-                console.error("分享失败:", err);
-                alert("分享失败，请手动复制链接");
+              showShareStatus("分享成功！", true);
+            }).catch(err => {
+              console.log("分享取消:", err);
+              if (err.name !== 'AbortError') {
+                showShareStatus("分享失败：" + err, true);
+              }
             });
-        } else {
-            alert("您的浏览器不支持原生分享，已自动复制链接");
-            copyShareLink();
+          } else {
+            showShareStatus("您的浏览器不支持原生分享", true);
+            // 回退到下载
+            downloadScreenshot();
+          }
+        } catch (error) {
+          showShareStatus("分享出错：" + error, true);
         }
       }
-      </script>
-  </body>
+      
+      // 下载截图函数
+      function downloadScreenshot() {
+        if (!currentScreenshotData) return;
+        
+        const a = document.createElement('a');
+        a.href = currentScreenshotData;
+        a.download = 'jumpjump.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showShareStatus("已保存截图", true);
+      }
+      
+      // 显示分享状态
+      function showShareStatus(message, autoHide = false) {
+        const statusEl = document.getElementById('share-status');
+        statusEl.textContent = message;
+        statusEl.style.display = 'block';
+        
+        if (autoHide) {
+          setTimeout(() => {
+            statusEl.style.display = 'none';
+          }, 3000);
+        }
+      }
+      
+      // 隐藏分享状态
+      function hideShareStatus() {
+        document.getElementById('share-status').style.display = 'none';
+      }
+      
+      // 准备分享数据
+      function prepareShare(dataUrl) {
+        currentScreenshotData = dataUrl;
+        // 直接触发原生分享
+        nativeShare();
+      }
+      
+      // 截图函数
+      function DownloadImage(data, size, filename) {
+        try {
+          // 将 Unity 传递的字节数组转换为 Base64
+          const binaryData = new Uint8Array(data);
+          let binary = '';
+          for (let i = 0; i < binaryData.length; i++) {
+            binary += String.fromCharCode(binaryData[i]);
+          }
+          const base64Data = btoa(binary);
+          const dataUrl = `data:image/png;base64,${base64Data}`;
+          
+          // 调用准备分享函数
+          prepareShare(dataUrl);
+        } catch (error) {
+          console.error("图像处理失败:", error);
+          showShareStatus("图像处理失败", true);
+        }
+      }
+      
+      // 确保函数在全局作用域可用
+      window.DownloadImage = DownloadImage;
+  </script>
+</body>
+
 </html>
